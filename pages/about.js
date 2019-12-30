@@ -1,7 +1,7 @@
-import MyLayout from '../components/MyLayout';
+import Layout from '../components/MyLayout';
 
 const About = () => {
-  return <MyLayout>Hello about next.js</MyLayout>;
+  return <Layout>Hello about next.js</Layout>;
 };
 
 export default About;
