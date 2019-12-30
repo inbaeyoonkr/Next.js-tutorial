@@ -1,31 +1,75 @@
 import Layout from '../components/MyLayout';
 import Link from 'next/link';
-import fetch from 'isomorphic-unfetch';
 
-const Index = props => {
-  const { shows } = props;
-  return (
-    <Layout>
-      <ul>
-        {shows.map(show => (
-          <li>
-            <Link href='/p/[id]' as={`/p/${show.id}`}>
-              <a>{show.name}</a>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </Layout>
-  );
+const getPosts = () => {
+  return [
+    { id: 'hello-nextjs', title: 'Hello Next.js' },
+    { id: 'learn-nextjs', title: 'Learn Next.js is awesome' },
+    { id: 'deploy-nextjs', title: 'Deploy apps with ZEIT' }
+  ];
 };
 
-Index.getInitialProps = async function() {
-  const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
-  const data = await res.json();
-  console.log(`Show data fetched. Count : ${data.length}`);
-  return {
-    shows: data.map(entry => entry.show)
-  };
+const PostLink = ({ post }) => (
+  <li key={post.id}>
+    <Link href='/p/[id]' as={`/p/${post.id}`}>
+      <a>{post.title}</a>
+    </Link>
+    <style jsx>{`
+      a {
+        font-family: 'Arial';
+      }
+      li {
+        list-style: none;
+        margin: 5px 0;
+      }
+
+      a {
+        text-decoration: none;
+        color: blue;
+      }
+
+      a:hover {
+        opacity: 0.6;
+      }
+    `}</style>
+  </li>
+);
+
+const Index = () => {
+  return (
+    <Layout>
+      <h1>My Blog</h1>
+      <ul>
+        {getPosts().map(post => (
+          <PostLink post={post} />
+        ))}
+      </ul>
+      <style jsx>{`
+        h1,
+        a {
+          font-family: 'Arial';
+        }
+
+        ul {
+          padding: 0;
+        }
+
+        li {
+          list-style: none;
+          margin: 5px 0;
+        }
+
+        a {
+          text-decoration: none;
+          color: blue;
+        }
+
+        a:hover {
+          opacity: 0.6;
+        }
+      `}</style>
+    </Layout>
+  );
 };
 
 export default Index;
